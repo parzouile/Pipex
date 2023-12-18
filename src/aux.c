@@ -6,7 +6,7 @@
 /*   By: aschmitt <aschmitt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 17:36:40 by aschmitt          #+#    #+#             */
-/*   Updated: 2023/12/08 18:52:36 by aschmitt         ###   ########.fr       */
+/*   Updated: 2023/12/18 15:11:07 by aschmitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	**find_paths(char **envp)
 		while (envp[i][a] && s[a] && envp[i][a] == s[a])
 			a ++;
 		if (a == 5)
-			break;
+			break ;
 	}
 	if (a == 5)
 		return (ft_split(envp[i] + 5, ':'));

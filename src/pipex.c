@@ -6,7 +6,7 @@
 /*   By: aschmitt <aschmitt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 13:23:16 by aschmitt          #+#    #+#             */
-/*   Updated: 2023/12/18 14:34:39 by aschmitt         ###   ########.fr       */
+/*   Updated: 2023/12/18 15:15:49 by aschmitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,13 @@ void	command(char *cmd, char **envp)
 	if (!bin)
 	{
 		free_tab(args);
-		error("Error bin\n");		
+		error("Error bin\n");
 	}
 	if (execve(bin, args, envp) == -1)
 		error("Error execution\n");
 }
 
-void	child_process(char **argv, int *pipefd, char** envp)
+void	child_process(char **argv, int *pipefd, char **envp)
 {
 	int	fd;
 
@@ -43,13 +43,13 @@ void	child_process(char **argv, int *pipefd, char** envp)
 	command(argv[1], envp);
 }
 
-void	parent_process(char **argv, int *pipefd, char** envp)
+void	parent_process(char **argv, int *pipefd, char **envp)
 {
 	int	fd;
 
 	fd = open(argv[3], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd == -1)
-		 error("Error open\n");
+		error("Error open\n");
 	dup2(fd, STDOUT_FILENO);
 	dup2(pipefd[0], STDIN_FILENO);
 	close(pipefd[1]);
@@ -64,7 +64,7 @@ int	main(int argc, char **argv, char **envp)
 	if (argc != 5)
 		return (write(0, "Error args\n", 12));
 	if (pipe(pipefd) == -1)
-        return (write(0, "Error pipe\n", 12));
+		return (write(0, "Error pipe\n", 12));
 	pid = fork();
 	if (pid == -1)
 		return (write(0, "Error fork\n", 12));
