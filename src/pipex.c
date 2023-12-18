@@ -6,15 +6,13 @@
 /*   By: aschmitt <aschmitt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 13:23:16 by aschmitt          #+#    #+#             */
-/*   Updated: 2023/12/08 18:52:57 by aschmitt         ###   ########.fr       */
+/*   Updated: 2023/12/18 14:34:39 by aschmitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-
-
-int	command(char *cmd, char **envp)
+void	command(char *cmd, char **envp)
 {
 	char	**args;
 	char	*bin;
@@ -30,33 +28,32 @@ int	command(char *cmd, char **envp)
 	}
 	if (execve(bin, args, envp) == -1)
 		error("Error execution\n");
-	return (0);
 }
 
-int	child_process(char **argv, int *pipefd, char** envp)
+void	child_process(char **argv, int *pipefd, char** envp)
 {
 	int	fd;
 
 	fd = open(argv[0], O_RDONLY, 0644);
 	if (fd == -1)
-		return (write(2, "Error open\n", 12));
+		error("Error open\n");
 	dup2(pipefd[1], STDOUT_FILENO);
 	dup2(fd, STDIN_FILENO);
 	close(pipefd[0]);
-	return (command(argv[1], envp));
+	command(argv[1], envp);
 }
 
-int	parent_process(char **argv, int *pipefd, char** envp)
+void	parent_process(char **argv, int *pipefd, char** envp)
 {
 	int	fd;
 
 	fd = open(argv[3], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd == -1)
-		return (write(2, "Error open\n", 12));
+		 error("Error open\n");
 	dup2(fd, STDOUT_FILENO);
 	dup2(pipefd[0], STDIN_FILENO);
 	close(pipefd[1]);
-	return (command(argv[2], envp));
+	command(argv[2], envp);
 }
 
 int	main(int argc, char **argv, char **envp)
