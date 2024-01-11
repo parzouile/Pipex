@@ -6,7 +6,7 @@
 /*   By: aschmitt <aschmitt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 16:39:52 by aschmitt          #+#    #+#             */
-/*   Updated: 2023/12/18 16:44:31 by aschmitt         ###   ########.fr       */
+/*   Updated: 2024/01/11 19:44:31 by aschmitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,4 +23,29 @@ char	*ft_copy(char *cmd)
 		bin[i] = cmd[i];
 	bin[i] = 0;
 	return (bin);
+}
+
+char	*find_bin(char *cmd, char **envp)
+{
+	char	**path;
+	char	*bin;
+	int		i;
+
+	i = 0;
+	path = find_paths(envp);
+	if (!path)
+		return (NULL);
+	while (path[i])
+	{
+		bin = ft_join(path[i], cmd);
+		if (access(bin, F_OK) == 0)
+		{
+			free_tab(path);
+			return (bin);
+		}
+		free(bin);
+		i++;
+	}
+	free_tab(path);
+	return (NULL);
 }

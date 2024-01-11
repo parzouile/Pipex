@@ -6,7 +6,7 @@
 /*   By: aschmitt <aschmitt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 13:23:16 by aschmitt          #+#    #+#             */
-/*   Updated: 2023/12/18 16:55:15 by aschmitt         ###   ########.fr       */
+/*   Updated: 2024/01/11 19:44:20 by aschmitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 char	*args_path(char *args)
 {
 	int		i;
-	int 	a;
+	int		a;
 	char	*s;
 
 	i = -1;
@@ -49,7 +49,7 @@ void	command(char *cmd, char **envp)
 		bin = ft_copy(args[0]);
 		args[0] = args_path(args[0]);
 	}
-	else 
+	else
 		bin = find_bin(args[0], envp);
 	if (!bin)
 	{

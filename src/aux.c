@@ -6,7 +6,7 @@
 /*   By: aschmitt <aschmitt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 17:36:40 by aschmitt          #+#    #+#             */
-/*   Updated: 2023/12/18 16:14:09 by aschmitt         ###   ########.fr       */
+/*   Updated: 2024/01/11 19:38:39 by aschmitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,29 +80,4 @@ void	error(char *s)
 {
 	write(2, s, ft_strlen(s));
 	exit(EXIT_FAILURE);
-}
-
-char	*find_bin(char *cmd, char **envp)
-{
-	char	**path;
-	char	*bin;
-	int		i;
-
-	i = 0;
-	path = find_paths(envp);
-	if (!path)
-		return (NULL);
-	while (path[i])
-	{
-		bin = ft_join(path[i], cmd);
-		if (access(bin, F_OK) == 0)
-		{
-			free_tab(path);
-			return (bin);	
-		}
-		free(bin);
-		i++;
-	}
-	free_tab(path);
-	return (NULL);
 }
