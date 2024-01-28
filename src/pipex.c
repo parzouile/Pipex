@@ -6,7 +6,7 @@
 /*   By: aschmitt <aschmitt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 13:23:16 by aschmitt          #+#    #+#             */
-/*   Updated: 2024/01/25 23:12:41 by aschmitt         ###   ########.fr       */
+/*   Updated: 2024/01/28 13:47:12 by aschmitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	command(char *cmd, char **envp)
 
 	args = ft_split(cmd, ' ');
 	if (!args)
-		error("Error malloc\n");
+		ft_error("Error malloc\n");
 	if (cmd[0] == '/')
 	{
 		bin = ft_copy(args[0]);
@@ -54,10 +54,10 @@ void	command(char *cmd, char **envp)
 	if (!bin)
 	{
 		free_tab(args);
-		error("Error Path\n");
+		ft_error("Error Path\n");
 	}
 	if (execve(bin, args, envp) == -1)
-		error("Error execution\n");
+		ft_error("Error execution\n");
 }
 
 void	child_process(char **argv, int *pipefd, char **envp)
@@ -66,7 +66,7 @@ void	child_process(char **argv, int *pipefd, char **envp)
 
 	fd = open(argv[0], O_RDONLY, 0644);
 	if (fd == -1)
-		error("Error open\n");
+		ft_error("Error open\n");
 	dup2(pipefd[1], STDOUT_FILENO);
 	dup2(fd, STDIN_FILENO);
 	close(pipefd[0]);
@@ -79,31 +79,130 @@ void	parent_process(char **argv, int *pipefd, char **envp)
 
 	fd = open(argv[3], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd == -1)
-		error("Error open\n");
+		ft_error("Error open\n");
 	dup2(fd, STDOUT_FILENO);
 	dup2(pipefd[0], STDIN_FILENO);
 	close(pipefd[1]);
 	command(argv[2], envp);
 }
 
-int	main(int argc, char **argv, char **envp)
+int	first_process(char **argv, int pipefd[2], char **envp)
 {
+	int		fd;
 	pid_t	pid;
-	int		pipefd[2];
 
-	if (argc != 5)
-		return (write(0, "Error args\n", 12));
-	if (pipe(pipefd) == -1)
-		return (write(0, "Error pipe\n", 12));
+	fd = open(argv[0], O_RDONLY, 0644);
+	if (fd == -1)
+		ft_error("Error open\n");
 	pid = fork();
 	if (pid == -1)
-		return (write(0, "Error fork\n", 12));
-	if (pid == 0)
-		child_process(argv + 1, pipefd, envp);
+	{
+		close(fd);
+		close(pipefd[0]);
+		close(pipefd[1]);
+		ft_error("pipex: fork");
+	}
+	else if (pid == 0)
+	{
+		dup2(pipefd[1], STDOUT_FILENO);
+		dup2(fd, STDIN_FILENO);
+		close(pipefd[0]);
+		command(argv[1], envp);
+	}
+	return (1);
+}
+
+int	mid_process(int pipefd[2], char *cmd, char **envp)
+{
+	pid_t	pid;
+	int		new_pipe[2];
+
+	close(pipefd[1]);
+	if (pipe(new_pipe) == -1)
+	{
+		(write(2, "Error pipe\n", 12));
+	}
+	pid = fork();
+	if (pid == -1)
+	{
+		close(pipefd[0]);
+		close(new_pipe[0]);
+		close(new_pipe[1]);
+		ft_error("pipex: fork");
+	}
+	else if (pid == 0)
+	{
+		dup2(new_pipe[1], STDOUT_FILENO);
+		dup2(pipefd[0], STDIN_FILENO);
+		close(new_pipe[0]);
+		command(cmd, envp);
+		close(pipefd[0]);
+		close(new_pipe[1]);
+	}
 	else
 	{
-		wait(NULL);
-		parent_process(argv + 1, pipefd, envp);
+		pipefd[0] = new_pipe[0];
+		pipefd[1] = new_pipe[1];
 	}
+	return (1);
+}
+
+int	last_process(char **argv, int pipefd[2], char **envp, int i)
+{
+	pid_t	pid;
+	int		fd;
+
+	fd = open(argv[i + 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (fd == -1)
+		ft_error("Error open\n");
+	close(pipefd[1]);
+	pid = fork();
+	if (pid == -1)
+	{
+		close(pipefd[0]);
+		close(pipefd[1]);
+		ft_error("pipex: fork");
+	}
+	else if (pid == 0)
+	{
+		dup2(pipefd[0], STDIN_FILENO);
+		dup2(fd, STDOUT_FILENO);
+		command(argv[i], envp);
+		close(pipefd[0]);
+		exit(1);
+	}
+	else
+	{
+		close(pipefd[0]);
+	}
+	return (1);
+}
+
+
+void	pipex(int argc, char **argv, char **envp, int pipefd[2])
+{
+	int	i;
+
+	i = 1;
+	if (!first_process(argv, pipefd, envp))
+		return ;
+	while (++i < argc - 2)
+	{
+		
+		mid_process(pipefd, argv[i], envp);
+	}
+	last_process(argv, pipefd, envp, i);
+	
+}
+
+int	main(int argc, char **argv, char **envp)
+{
+	int		pipefd[2];
+
+	if (argc < 5)
+		return (write(2, "Error args\n", 12));
+	if (pipe(pipefd) == -1)
+		return (write(2, "Error pipe\n", 12));
+	pipex(argc - 1, argv + 1, envp, pipefd);
 	return (0);
 }

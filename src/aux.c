@@ -6,7 +6,7 @@
 /*   By: aschmitt <aschmitt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 17:36:40 by aschmitt          #+#    #+#             */
-/*   Updated: 2024/01/11 19:38:39 by aschmitt         ###   ########.fr       */
+/*   Updated: 2024/01/28 12:18:54 by aschmitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	**find_paths(char **envp)
 	}
 	if (a == 5)
 		return (ft_split(envp[i] + 5, ':'));
-	error("Error Path");
+	ft_error("Error Path");
 	return (NULL);
 }
 
@@ -76,7 +76,7 @@ char	*ft_join(char *s1, char *s2)
 	return (result);
 }
 
-void	error(char *s)
+void	ft_error(char *s)
 {
 	write(2, s, ft_strlen(s));
 	exit(EXIT_FAILURE);

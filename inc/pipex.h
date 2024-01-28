@@ -6,7 +6,7 @@
 /*   By: aschmitt <aschmitt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 13:33:58 by aschmitt          #+#    #+#             */
-/*   Updated: 2024/01/25 23:14:41 by aschmitt         ###   ########.fr       */
+/*   Updated: 2024/01/28 13:26:04 by aschmitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	*find_bin(char *cmd, char **envp);
 char	*ft_join(char *s1, char *s2);
 char	**find_paths(char **envp);
 void	free_tab(char **path);
-void	error(char *s);
+void	ft_error(char *s);
 size_t	ft_strlen(char *s);
 char	*ft_copy(char *cmd);
 
