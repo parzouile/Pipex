@@ -6,7 +6,7 @@
 /*   By: aschmitt <aschmitt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 17:36:40 by aschmitt          #+#    #+#             */
-/*   Updated: 2024/01/28 12:18:54 by aschmitt         ###   ########.fr       */
+/*   Updated: 2024/02/06 17:13:14 by aschmitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,5 +79,5 @@ char	*ft_join(char *s1, char *s2)
 void	ft_error(char *s)
 {
 	write(2, s, ft_strlen(s));
-	exit(EXIT_FAILURE);
+	exit(1);
 }

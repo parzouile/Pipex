@@ -6,7 +6,7 @@
 /*   By: aschmitt <aschmitt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 13:33:58 by aschmitt          #+#    #+#             */
-/*   Updated: 2024/01/28 13:26:04 by aschmitt         ###   ########.fr       */
+/*   Updated: 2024/02/06 18:45:15 by aschmitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,7 @@ void	free_tab(char **path);
 void	ft_error(char *s);
 size_t	ft_strlen(char *s);
 char	*ft_copy(char *cmd);
+void	command(char *cmd, char **envp);
+void	processus(int new_pipe[2], int pipefd[2], char *cmd, char **envp);
 
 #endif
