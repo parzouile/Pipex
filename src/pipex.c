@@ -6,13 +6,13 @@
 /*   By: aschmitt <aschmitt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 13:23:16 by aschmitt          #+#    #+#             */
-/*   Updated: 2024/02/06 18:45:50 by aschmitt         ###   ########.fr       */
+/*   Updated: 2024/02/07 12:34:08 by aschmitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-int	first_process(char **argv, int pipefd[2], char **envp)
+void	first_process(char **argv, int pipefd[2], char **envp)
 {
 	int		fd;
 	pid_t	pid;
@@ -35,19 +35,17 @@ int	first_process(char **argv, int pipefd[2], char **envp)
 		close(pipefd[0]);
 		command(argv[1], envp);
 	}
-	return (1);
+	wait(&pid);
 }
 
-int	mid_process(int pipefd[2], char *cmd, char **envp)
+void	mid_process(int pipefd[2], char *cmd, char **envp)
 {
 	pid_t	pid;
 	int		new_pipe[2];
 
 	close(pipefd[1]);
 	if (pipe(new_pipe) == -1)
-	{
-		ft_error("Error pipe\n");
-	}
+		(close(pipefd[0]), ft_error("Error pipe\n"));
 	pid = fork();
 	if (pid == -1)
 	{
@@ -58,12 +56,9 @@ int	mid_process(int pipefd[2], char *cmd, char **envp)
 	}
 	else if (pid == 0)
 		processus(new_pipe, pipefd, cmd, envp);
-	else
-	{
-		pipefd[0] = new_pipe[0];
-		pipefd[1] = new_pipe[1];
-	}
-	return (1);
+	wait(&pid);
+	pipefd[0] = new_pipe[0];
+	pipefd[1] = new_pipe[1];
 }
 
 void	last_process(char **argv, int pipefd[2], char **envp, int i)
@@ -71,27 +66,22 @@ void	last_process(char **argv, int pipefd[2], char **envp, int i)
 	pid_t	pid;
 	int		fd;
 
+	close(pipefd[1]);
 	fd = open(argv[i + 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd == -1)
-		ft_error("Error open\n");
-	close(pipefd[1]);
+		(close(pipefd[0]), ft_error("Error open\n"));
 	pid = fork();
 	if (pid == -1)
-	{
-		close(pipefd[0]);
-		close(pipefd[1]);
-		ft_error("pipex: fork");
-	}
+		(close(pipefd[0]), ft_error("pipex: fork"));
 	else if (pid == 0)
 	{
 		dup2(pipefd[0], STDIN_FILENO);
 		dup2(fd, STDOUT_FILENO);
 		command(argv[i], envp);
-		close(pipefd[0]);
-		exit(1);
+		(close(pipefd[0]), ft_error("Error  command execution\n"));
 	}
-	else
-		close(pipefd[0]);
+	wait(&pid);
+	close(pipefd[0]);
 }
 
 void	pipex(int argc, char **argv, char **envp)
@@ -104,10 +94,7 @@ void	pipex(int argc, char **argv, char **envp)
 		ft_error("Error pipe\n");
 	first_process(argv, pipefd, envp);
 	while (++i < argc - 2)
-	{
-		wait(NULL);
 		mid_process(pipefd, argv[i], envp);
-	}
 	last_process(argv, pipefd, envp, i);
 }
 
