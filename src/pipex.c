@@ -6,7 +6,7 @@
 /*   By: aschmitt <aschmitt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 13:23:16 by aschmitt          #+#    #+#             */
-/*   Updated: 2024/02/07 12:34:08 by aschmitt         ###   ########.fr       */
+/*   Updated: 2024/02/15 13:33:33 by aschmitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,8 +100,19 @@ void	pipex(int argc, char **argv, char **envp)
 
 int	main(int argc, char **argv, char **envp)
 {
+	int	pipefd[2];
+	int	i;
+
 	if (argc < 5)
 		return (write(2, "Error args\n", 12));
-	pipex(argc - 1, argv + 1, envp);
+	argc--;
+	argv++;
+	i = 1;
+	if (pipe(pipefd) == -1)
+		ft_error("Error pipe\n");
+	first_process(argv, pipefd, envp);
+	while (++i < argc - 2)
+		mid_process(pipefd, argv[i], envp);
+	last_process(argv, pipefd, envp, i);
 	return (0);
 }
