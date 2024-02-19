@@ -6,7 +6,7 @@
 #    By: aschmitt <aschmitt@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/07 13:36:27 by aschmitt          #+#    #+#              #
-#    Updated: 2024/02/19 10:20:47 by aschmitt         ###   ########.fr        #
+#    Updated: 2024/02/19 15:03:09 by aschmitt         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ CC				= cc
 CFLAGS			= -Wall -Wextra -Werror -I
 RM				= rm -f
 
-SRC =	$(SRC_DIR)pipex.c $(SRC_DIR)ft_split.c $(SRC_DIR)aux.c $(SRC_DIR)aux2.c $(SRC_DIR)command.c
+SRC =	$(SRC_DIR)pipex.c $(SRC_DIR)ft_split.c $(SRC_DIR)aux.c $(SRC_DIR)aux2.c $(SRC_DIR)command.c $(SRC_DIR)here_doc.c $(SRC_DIR)get_next_line.c  $(SRC_DIR)get_next_line_utils.c 
 
 OBJ 			= $(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRC))
 
@@ -35,9 +35,9 @@ $(NAME): 		$(OBJ)
 				@echo $(G)Compiling [$(SRC)]
 				@touch infile
 				@touch outfile
-				@echo Create [infile, outfile]
+				@echo Create [infile, outfile]$(X)
 				@$(CC) -o $(NAME) $(OBJ)
-				@echo Compiling [$(NAME)]$(X)
+				@echo $(G)Compiling [$(NAME)]$(X)
 
 $(OBJ_DIR)%.o:	$(SRC_DIR)%.c
 				@mkdir -p $(@D)

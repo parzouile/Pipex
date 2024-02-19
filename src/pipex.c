@@ -6,7 +6,7 @@
 /*   By: aschmitt <aschmitt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 13:23:16 by aschmitt          #+#    #+#             */
-/*   Updated: 2024/02/19 10:05:56 by aschmitt         ###   ########.fr       */
+/*   Updated: 2024/02/19 15:37:22 by aschmitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,11 @@ int	first_process(char **argv, int pipefd[2], char **envp)
 	int		fd;
 	pid_t	pid;
 
-	fd = open(argv[0], O_RDONLY, 0644);
+	fd = get_here_doc(argv);
 	if (fd == -1)
 		return (perror("Error infile"), 1);
+	if (ft_strcmp("here_doc", argv[1]) == 0)
+		argv++;
 	pid = fork();
 	if (pid == -1)
 	{
@@ -91,6 +93,8 @@ int	main(int argc, char **argv, char **envp)
 	int	i;
 
 	if (argc < 5)
+		return (write(2, "Error args\n", 12));
+	if (ft_strcmp("here_doc", argv[1]) == 0 && argc < 6)
 		return (write(2, "Error args\n", 12));
 	argc--;
 	argv++;

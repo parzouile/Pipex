@@ -6,7 +6,7 @@
 /*   By: aschmitt <aschmitt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 17:48:02 by aschmitt          #+#    #+#             */
-/*   Updated: 2024/02/19 10:14:15 by aschmitt         ###   ########.fr       */
+/*   Updated: 2024/02/19 15:40:13 by aschmitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	command(char *cmd, char **envp)
 	args = ft_split(cmd, ' ');
 	if (!args)
 		ft_error("Malloc");
-	if (cmd[0] == '/'|| cmd[0] == '.')
+	if (cmd[0] == '/' || cmd[0] == '.')
 	{
 		bin = ft_copy(args[0]);
 		args[0] = args_path(args[0]);
