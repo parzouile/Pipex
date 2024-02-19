@@ -6,7 +6,7 @@
 #    By: aschmitt <aschmitt@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/07 13:36:27 by aschmitt          #+#    #+#              #
-#    Updated: 2024/02/19 15:03:09 by aschmitt         ###   ########.fr        #
+#    Updated: 2024/02/19 15:47:42 by aschmitt         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,15 +44,16 @@ $(OBJ_DIR)%.o:	$(SRC_DIR)%.c
 				@$(CC) $(CFLAGS) $(INC) -c $< -o $@
 
 clean:
-				@echo $(G)Delete [Obj]
-				@echo Delete [infile, outfile]$(X)
-				@$(RM) infile
-				@$(RM) outfile
+				@echo $(G)Delete [Obj]$(X)
 				@$(RM) -r $(OBJ_DIR)
 
 fclean: 		clean
+				@echo $(G)Delete [infile, outfile]$(X)
+				@$(RM) infile
+				@$(RM) outfile
 				@echo $(G)Delete [$(NAME)]$(X)
 				@$(RM) $(NAME)
+				
 
 re: 			fclean all
 

@@ -6,7 +6,7 @@
 /*   By: aschmitt <aschmitt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 13:23:16 by aschmitt          #+#    #+#             */
-/*   Updated: 2024/02/19 15:37:22 by aschmitt         ###   ########.fr       */
+/*   Updated: 2024/02/19 15:56:20 by aschmitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	first_process(char **argv, int pipefd[2], char **envp)
 	fd = get_here_doc(argv);
 	if (fd == -1)
 		return (perror("Error infile"), 1);
-	if (ft_strcmp("here_doc", argv[1]) == 0)
+	if (ft_strcmp("here_doc", argv[0]) == 0)
 		argv++;
 	pid = fork();
 	if (pid == -1)

@@ -6,7 +6,7 @@
 /*   By: aschmitt <aschmitt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 13:33:58 by aschmitt          #+#    #+#             */
-/*   Updated: 2024/02/19 15:40:55 by aschmitt         ###   ########.fr       */
+/*   Updated: 2024/02/19 15:45:30 by aschmitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 # endif
 
 char	*get_next_line(int fd);
-size_t	ft_strlen(const char *s);
+size_t	ft_strlen(char *s);
 int		check_nl(char *stack);
 char	*add_to_stack(char *stack, char *buff);
 char	*ft_new_stack(char *buff);
