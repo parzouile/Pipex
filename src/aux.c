@@ -6,13 +6,13 @@
 /*   By: aschmitt <aschmitt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 17:36:40 by aschmitt          #+#    #+#             */
-/*   Updated: 2024/02/06 17:13:14 by aschmitt         ###   ########.fr       */
+/*   Updated: 2024/02/19 10:13:34 by aschmitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-char	**find_paths(char **envp)
+char	**find_paths(char **envp, char **args)
 {
 	int		i;
 	int		a;
@@ -30,7 +30,9 @@ char	**find_paths(char **envp)
 	}
 	if (a == 5)
 		return (ft_split(envp[i] + 5, ':'));
-	ft_error("Error Path");
+	free_tab(args);
+	write(2, "Error Path\n", 12);
+	exit(1);
 	return (NULL);
 }
 
@@ -78,6 +80,6 @@ char	*ft_join(char *s1, char *s2)
 
 void	ft_error(char *s)
 {
-	write(2, s, ft_strlen(s));
+	perror(s);
 	exit(1);
 }

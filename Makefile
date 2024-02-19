@@ -6,7 +6,7 @@
 #    By: aschmitt <aschmitt@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/07 13:36:27 by aschmitt          #+#    #+#              #
-#    Updated: 2024/02/15 14:07:39 by aschmitt         ###   ########.fr        #
+#    Updated: 2024/02/19 10:20:47 by aschmitt         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,16 +32,22 @@ all: 			$(NAME)
 bonus:			$(NAME)
 
 $(NAME): 		$(OBJ)
-				@echo $(G)Compiling [$(SRC)]$(X) 
+				@echo $(G)Compiling [$(SRC)]
+				@touch infile
+				@touch outfile
+				@echo Create [infile, outfile]
 				@$(CC) -o $(NAME) $(OBJ)
-				@echo $(G)Compiling [$(NAME)]$(X)
+				@echo Compiling [$(NAME)]$(X)
 
 $(OBJ_DIR)%.o:	$(SRC_DIR)%.c
 				@mkdir -p $(@D)
 				@$(CC) $(CFLAGS) $(INC) -c $< -o $@
 
 clean:
-				@echo $(G)Delete [Obj]$(X)
+				@echo $(G)Delete [Obj]
+				@echo Delete [infile, outfile]$(X)
+				@$(RM) infile
+				@$(RM) outfile
 				@$(RM) -r $(OBJ_DIR)
 
 fclean: 		clean
