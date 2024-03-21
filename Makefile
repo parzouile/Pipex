@@ -6,7 +6,7 @@
 #    By: aschmitt <aschmitt@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/07 13:36:27 by aschmitt          #+#    #+#              #
-#    Updated: 2024/02/19 15:47:42 by aschmitt         ###   ########.fr        #
+#    Updated: 2024/02/21 09:12:10 by aschmitt         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ SRC_DIR			= src/
 OBJ_DIR			= obj/
 
 CC				= cc
-CFLAGS			= -Wall -Wextra -Werror -I
+CFLAGS			= -Wall -Wextra -Werror -g3 -I
 RM				= rm -f
 
 SRC =	$(SRC_DIR)pipex.c $(SRC_DIR)ft_split.c $(SRC_DIR)aux.c $(SRC_DIR)aux2.c $(SRC_DIR)command.c $(SRC_DIR)here_doc.c $(SRC_DIR)get_next_line.c  $(SRC_DIR)get_next_line_utils.c 
